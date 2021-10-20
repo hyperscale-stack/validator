@@ -28,7 +28,7 @@ func main() {
 		},
 	})
 
-	errs := i.Validate(map[string]interface{}{
+	errs := i.ValidateMap(map[string]interface{}{
 		"email":  "bad",
     })
     // return 
@@ -51,7 +51,7 @@ import (
 )
 
 func main() {
-    i := NewValuesValidator(map[string][]Validator{
+    i := NewInputValidator(map[string][]Validator{
 		"email": {
 			NewEmailValidator(EmailTimeout(1 * time.Second)),
 		},
@@ -60,7 +60,7 @@ func main() {
     values := url.Values{}
     values.Set("email", "bad")
 
-	errs := i.Validate(values)
+	errs := i.ValidateValues(values)
     // return 
     // map[string][]error{
 	//     "email": []error{...},

@@ -4,9 +4,12 @@
 
 package validator
 
+import "net/url"
+
 // InputValidator interface.
 type InputValidator interface {
-	Validate(input map[string]interface{}) map[string][]error
+	ValidateMap(input map[string]interface{}) map[string][]error
+	ValidateValues(values url.Values) map[string][]error
 }
 
 type inputValidator struct {
@@ -37,12 +40,26 @@ func (v inputValidator) validateField(key string, value interface{}) []error {
 	return errs
 }
 
-func (v inputValidator) Validate(input map[string]interface{}) map[string][]error {
+func (v inputValidator) ValidateMap(input map[string]interface{}) map[string][]error {
 	errs := make(map[string][]error)
 
 	for key, val := range input {
 		if err := v.validateField(key, val); len(err) > 0 {
 			errs[key] = err
+		}
+	}
+
+	return errs
+}
+
+func (v inputValidator) ValidateValues(values url.Values) map[string][]error {
+	errs := make(map[string][]error)
+
+	for key, vals := range values {
+		for _, val := range vals {
+			if err := v.validateField(key, val); len(err) > 0 {
+				errs[key] = err
+			}
 		}
 	}
 
