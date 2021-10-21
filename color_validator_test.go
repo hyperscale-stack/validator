@@ -25,3 +25,11 @@ func TestColorValidator(t *testing.T) {
 	assert.NoError(t, v.Validate("#F6F6F6"))
 	assert.NoError(t, v.Validate("#F6F"))
 }
+
+func BenchmarkColorValidator(b *testing.B) {
+	v := NewColorValidator()
+
+	for i := 0; i < b.N; i++ {
+		v.Validate("#f6f6f6")
+	}
+}

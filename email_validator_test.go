@@ -28,3 +28,11 @@ func TestEmailValidatorSingle(t *testing.T) {
 
 	assert.NoError(t, v.Validate("euskadi31@gmail.com"))
 }
+
+func BenchmarkEmailValidator(b *testing.B) {
+	v := NewEmailValidator(EmailTimeout(200 * time.Millisecond))
+
+	for i := 0; i < b.N; i++ {
+		v.Validate("euskadi31@gmail.com")
+	}
+}
