@@ -56,3 +56,14 @@ func TestPasswordValidatorWithBadPassword(t *testing.T) {
 		assert.EqualError(t, v.Validate(item.password), item.err)
 	}
 }
+
+func BenchmarkPasswordValidator(b *testing.B) {
+	v := NewPasswordValidator(Password{
+		Min: 6,
+		Max: 12,
+	})
+
+	for i := 0; i < b.N; i++ {
+		v.Validate("A-ef546gfd&")
+	}
+}

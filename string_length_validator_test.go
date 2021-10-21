@@ -44,3 +44,34 @@ func TestStringLengthValidatorWithMinAndMaxOption(t *testing.T) {
 	assert.EqualError(t, v.Validate("Testing"), "the input is more than 6 characters long")
 	assert.Nil(t, v.Validate("good t"))
 }
+
+func BenchmarkStringLengthValidatorMin(b *testing.B) {
+	v := NewStringLengthValidator(StringLength{
+		Min: 6,
+	})
+
+	for i := 0; i < b.N; i++ {
+		v.Validate("Test")
+	}
+}
+
+func BenchmarkStringLengthValidatorMax(b *testing.B) {
+	v := NewStringLengthValidator(StringLength{
+		Max: 6,
+	})
+
+	for i := 0; i < b.N; i++ {
+		v.Validate("Test")
+	}
+}
+
+func BenchmarkStringLengthValidatorMinMax(b *testing.B) {
+	v := NewStringLengthValidator(StringLength{
+		Min: 3,
+		Max: 6,
+	})
+
+	for i := 0; i < b.N; i++ {
+		v.Validate("Test")
+	}
+}

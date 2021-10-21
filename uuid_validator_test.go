@@ -32,3 +32,25 @@ func TestUUIDValidator(t *testing.T) {
 		0x5f, 0xfd, 0xce, 0x74, 0xfa, 0xd2,
 	}))
 }
+
+func BenchmarkUUIDValidatorString(b *testing.B) {
+	v := NewUUIDValidator()
+
+	for i := 0; i < b.N; i++ {
+		v.Validate("9D2C8507-5F9D-4CB0-A098-2E307B39DC91")
+	}
+}
+
+func BenchmarkUUIDValidatorBytes(b *testing.B) {
+	v := NewUUIDValidator()
+
+	for i := 0; i < b.N; i++ {
+		v.Validate([]byte{
+			0x7d, 0x44, 0x48, 0x40,
+			0x9d, 0xc0,
+			0x11, 0xd1,
+			0xb2, 0x45,
+			0x5f, 0xfd, 0xce, 0x74, 0xfa, 0xd2,
+		})
+	}
+}
