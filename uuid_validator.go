@@ -23,11 +23,11 @@ func (v uuidValidator) Validate(input interface{}) error {
 	switch val := input.(type) {
 	case string:
 		if _, err := uuid.Parse(val); err != nil {
-			return err
+			return fmt.Errorf("parse UUID: %w", err)
 		}
 	case []byte:
 		if _, err := uuid.FromBytes(val); err != nil {
-			return err
+			return fmt.Errorf("parse UUID from bytes: %w", err)
 		}
 	default:
 		return fmt.Errorf("invalid input type \"%v\" for UUID validator", reflect.TypeOf(val))
