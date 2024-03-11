@@ -36,7 +36,7 @@ func (v emailValidator) Validate(input interface{}) error {
 	case string:
 		addr, err := mail.ParseAddress(email)
 		if err != nil {
-			return err
+			return fmt.Errorf("parse address: %w", err)
 		}
 
 		parts := strings.Split(addr.Address, "@")
@@ -45,7 +45,7 @@ func (v emailValidator) Validate(input interface{}) error {
 		defer cancel()
 
 		if _, err := net.DefaultResolver.LookupMX(ctx, parts[1]); err != nil {
-			return err
+			return fmt.Errorf("lookup mx: %w", err)
 		}
 
 	default:
